@@ -1,0 +1,13 @@
+---
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t s3sync .
+      - docker images
+      - docker tag s3sync $DOCKER_USERNAME/s3sync:$TRAVIS_BUILD_NUMBER
+      - docker push $DOCKER_USERNAME/s3sync
+...
